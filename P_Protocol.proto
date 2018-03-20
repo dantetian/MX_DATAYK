@@ -1,0 +1,1301 @@
+import "P_Asset.proto";
+
+package Adoter.Asset;
+
+/////////////////////////////////////////////////////
+//
+// 游戏中各种存盘、属性、基础数据结构定义
+//
+// Client<->Server公共使用，单独服务器使用的数据格式请勿在此定义
+//
+/////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////
+//
+// 通用数据定义区
+//
+/////////////////////////////////////////////////////
+
+//账号
+message Account {
+	optional bytes username = 1; //用户名
+	optional bytes password = 2; //密码
+	optional ACCOUNT_TYPE account_type = 3;
+}
+
+//牌数据
+message PaiElement { 
+	optional CARD_TYPE card_type = 1; //牌类型：饼、条...
+	optional int32 card_value = 2; //牌值
+	optional int32 card_index = 3; //牌在表中索引:校验用
+	optional int64 source_player_id = 4; //来自玩家
+}
+
+message ShunZi {
+	repeated PaiElement pai = 1; //顺子
+}
+
+//物品
+message ItemElement { 
+	optional INVENTORY_TYPE inventory_type = 1; //包裹
+	optional int32 index = 2; //索引
+	optional int32 global_id = 3; //物品全局ID:校验用
+}
+
+//使用物品错误
+enum ERR_USE_ITEM_TYPE {
+	ERR_USE_ITEM_TYPE_SUCCESS = 0; //成功
+	ERR_USE_ITEM_TYPE_LEVEL_BELOW = 1; //级别不够
+	ERR_USE_ITEM_TYPE_LEVEL_UP = 2; //级别太高
+}
+
+//物品变化
+enum ITEM_CHANGED_TYPE {
+	ITEM_CHANGED_TYPE_GMT = 1; //游戏内发放
+	ITEM_CHANGED_TYPE_MALL = 2; //商城购买
+}
+
+//钻石变化
+enum DIAMOND_CHANGED_TYPE {
+	DIAMOND_CHANGED_TYPE_GMT = 1; //游戏内发放
+	DIAMOND_CHANGED_TYPE_MALL = 2; //商城购买
+	DIAMOND_CHANGED_TYPE_GENERAL_REWARD = 3; //通用奖励
+	DIAMOND_CHANGED_TYPE_OPEN_ROOM = 4; //开房
+}
+
+//欢乐豆变化
+enum HUANLEDOU_CHANGED_TYPE {
+	HUANLEDOU_CHANGED_TYPE_GMT = 1; //游戏内发放
+	HUANLEDOU_CHANGED_TYPE_MALL = 2; //商城购买
+	HUANLEDOU_CHANGED_TYPE_GENERAL_REWARD = 3; //通用奖励
+	HUANLEDOU_CHANGED_TYPE_ROOM_TICKET = 4; //房间
+	HUANLEDOU_CHANGED_TYPE_GAME = 5; //输赢
+}
+
+//房卡变化
+enum ROOM_CARD_CHANGED_TYPE {
+	ROOM_CARD_CHANGED_TYPE_GMT = 1; //游戏内发放
+	ROOM_CARD_CHANGED_TYPE_MALL = 2; //商城购买
+	ROOM_CARD_CHANGED_TYPE_OPEN_ROOM = 3; //开房
+	ROOM_CARD_CHANGED_TYPE_FANBEI = 4; //翻倍
+	ROOM_CARD_CHANGED_TYPE_GENERAL_REWARD = 5; //通用奖励
+	ROOM_CARD_CHANGED_TYPE_CREATE_CLAN = 6; //创建茶馆
+	ROOM_CARD_CHANGED_TYPE_RECHARGE_CLAN = 7; //茶馆充值
+}
+
+//系统冷却
+enum SYSTEM_COOLDOWN_TYPE {
+	SYSTEM_COOLDOWN_TYPE_MATCHING = 1; //匹配冷却
+};
+
+/////////////////////////////////////////////////////
+//
+// 游戏基本属性定义区
+//
+/////////////////////////////////////////////////////
+
+//账号数据：存盘数据
+message User {
+	optional Account account = 1; //账号
+	repeated int64 player_list = 2; //玩家角色
+	optional WechatUnion wechat = 3; //微信个人信息
+	optional ClientInfomation client_info = 4; //Client相关数据
+	optional int32 created_time = 5; //创建时间
+	optional bytes daili_acount = 6; //对应代理账号
+}
+
+//玩家座次
+enum POSITION_TYPE {
+	POSITION_TYPE_NULL = 0; 
+	POSITION_TYPE_EAST = 1; //东
+	POSITION_TYPE_SOUTH = 2; //南
+	POSITION_TYPE_WEST = 3; //西
+	POSITION_TYPE_NORTH = 4; //北
+}
+
+//加载场景类型
+enum LOAD_SCENE_TYPE {
+	LOAD_SCENE_TYPE_NULL = 1; //无状态
+	LOAD_SCENE_TYPE_START = 2; //开始加载
+	LOAD_SCENE_TYPE_SUCCESS = 3; //结束加载：成功
+	LOAD_SCENE_TYPE_FAILED = 4; //结束加载：失败
+}
+
+//玩家临时属性，不存盘
+message PlayerProp {
+	optional POSITION_TYPE position = 1; //玩家当前座次
+	optional int64 room_id = 2; //当前所在房间ID
+	optional LOAD_SCENE_TYPE load_type = 3; //场景加载(开始加载//已经进入场景)
+	optional GAME_OPER_TYPE game_oper_state = 4; //玩家状态(准备//开局)
+	optional int32 pai_oper_count = 5; //玩家操作次数
+	optional bool has_tinged = 6; //是否听牌
+	optional bool offline = 7; //是否离线
+	optional int64 voice_member_id = 8; //语音成员ID
+	optional int32 beilv = 9; //押注倍率
+}
+	
+//玩家简要信息
+message PlayerBrief {
+	optional int64 player_id = 1; //玩家ID
+	optional bytes nickname = 2; //玩家名称
+	optional bytes headimgurl = 3; //头像
+}
+
+//游戏记录
+message GameRecord {
+	message GameElement {
+		optional int64 player_id = 1; //玩家ID
+		optional bytes nickname = 2; //玩家名称
+		optional bytes headimgurl = 3; //头像
+		optional int32 score = 4; //积分和
+		//详细信息
+		message DetailElement {
+			optional int32 score = 1; //积分
+			optional FAN_TYPE fan_type = 2; //番类型
+		}
+		repeated DetailElement details = 5;
+	}
+	repeated GameElement list = 1;
+}
+
+//房间记录数据
+message RoomHistory {
+	optional int64 room_id = 1; //房间ID
+	optional int32 create_time = 2; //房间创建时间
+	optional RoomOptions options = 3; //房间设置
+	repeated GameRecord list = 4; //游戏数据列表
+	repeated PlayerBrief player_brief_list = 5; //玩家列表
+}
+
+//玩家公共数据 
+message CommonProp {
+	optional int64 player_id = 1; //玩家ID
+	optional int32 local_server_id = 2; //注册服务器
+	optional bytes name = 3; //名字
+	optional int32 iphoto = 4; //头像ID
+	optional int32 level = 5 [ default = 1 ]; //级别
+	optional GENDER_TYPE gender = 6 [ default = GENDER_TYPE_WOMAN]; //性别
+	optional int64 diamond = 7; //钻石总数 
+	optional int64 huanledou = 8 [ default = 10000 ]; //欢乐豆数 
+	optional int64 room_card_count = 9 [ default = 2 ]; //房卡数 
+	optional int64 total_rounds = 10; //参加的总局数 
+	optional int64 room_card_rounds = 11; //房卡局数
+	optional int64 total_win_rounds = 12; //赢牌局数
+	optional int64 streak_wins = 13; //最高连胜
+	optional int64 score = 14; //积分
+	optional int32 score_win_rounds = 15; //总积分胜利局数(8/16局胜利数)
+}
+
+//通用限制：存盘数据
+message PlayerCommonLimit {
+	message Element {
+		optional int64 common_limit_id = 1; //通用限制ID[CommonLimit]数据
+		optional int32 time_stamp = 2; //更新的时间戳
+		optional int32 count = 3; //当前次数
+	}
+	repeated Element elements = 1;
+}
+//冷却：存盘数据
+message PlayerCoolDown {
+	message Element {
+		optional int64 cool_down_id = 1; //通用限制ID[CoolDown]数据
+		optional int32 time_stamp = 2; //更新的时间戳
+	}
+	repeated Element elements = 1;
+}
+
+message Location {
+	optional double longitude = 1; //经度
+	optional double latitude = 2; //纬度
+}
+
+//Client数据
+message ClientInfomation {
+	optional bytes ip_address = 1; //IP地址
+	optional bytes system = 2; //系统//IOS8.1//Android4.2
+	optional bytes phone_type = 3; //手机型号//IPTHONE6/6S//小米6
+	optional Location location = 4; //位置
+	optional int32 version = 5; //版本
+	optional bytes imei = 6; //IMEI//手机唯一识别码
+}
+
+//
+//策划或者运营通过指令发送的邮件信息
+//
+//或者玩家之间邮件
+//
+message Mail {
+	optional bytes title = 1; //标题
+	optional bytes send_player = 2 [ default = "系统邮件" ]; //发件人
+	optional bytes content = 3; //内容
+	optional int32 send_time = 4; //发送时间
+	optional bool readed = 5; //是否已读
+	repeated MailAttachment attachments = 6; //附件
+}
+
+//玩家信息
+message Player {
+	optional CommonProp common_prop = 1; //公共属性(存储[CommonProp]字段)
+	optional bytes account = 2; //账号
+	optional int64 server_id = 3; //服务器ID，表示当前玩家所在服务器ID，玩家注册服务器ID在玩家ID中.
+	optional Inventory inventory = 4; //玩家包裹
+	optional PlayerCommonLimit common_limit = 5; //通用限制
+	optional PlayerCoolDown cool_down = 6; //冷却
+	optional int32 login_time =7; //登陆时间
+	optional int32 logout_time = 8; //登出时间
+	repeated int32 sign_time = 9; //签到时间
+	repeated int64 mail_list_system = 10; //系统邮件列表
+	repeated Mail mail_list_customized = 11; //定制化邮件列表
+	optional PlayerSetting game_setting = 12; //游戏设置
+	repeated int64 room_history = 13; //牌局历史数据
+	optional int64 room_id = 14; //玩家所在房间
+	optional bool card_count_changed = 15 [ default = false ]; //是否房卡加倍
+	optional ROOM_TYPE matching_room_type = 16; //正在匹配房间类型
+	repeated int64 clan_hosters = 17; //玩家创建的茶馆
+	repeated int64 clan_joiners = 18; //玩家加入的茶馆
+	optional bytes agent_account = 19; //代理账号
+	optional int64 selected_clan_id = 20; //当前选择茶馆
+}
+
+//包裹结构
+message Inventory {
+	message Element {
+		optional INVENTORY_TYPE inventory_type = 1;
+		repeated Item_Item items = 2; //包裹中存储的物品信息
+	}
+	repeated Element inventory = 1; //多个包裹(根据INVENTORY_TYPE_COUNT自动调整数量，所以无用包裹请勿增加[INVENTORY_TYPE]类型)
+}
+
+//茶馆
+//
+//MMO游戏里面的帮派,联盟,战队,俱乐部...
+//
+message SystemMessage {
+	optional int64 player_id = 1; //玩家ID
+	optional bytes name = 2; //玩家名字
+	optional int32 oper_time = 3; //操作时间
+	optional CLAN_OPER_TYPE oper_type = 4; //操作类型
+}
+
+enum CLAN_MEM_STATUS_TYPE {
+	CLAN_MEM_STATUS_TYPE_GAMING = 1; //游戏中
+	CLAN_MEM_STATUS_TYPE_AVAILABLE = 2; //空闲
+	CLAN_MEM_STATUS_TYPE_OFFLINE = 3; //离线
+}
+
+message Clan {
+	optional int64 clan_id = 1; //全局ID
+	optional bytes name = 2; //名字
+	optional int32 created_time = 3; //创建时间
+	optional int64 hoster_id = 4; //馆长
+	optional bytes hoster_name = 5; //馆长名字
+	optional int64 room_card_count = 6; //房卡数量
+	optional bytes announcement = 7; //公告
+	message Member {
+		optional int64 player_id = 1; //玩家ID
+		optional bytes name = 2; //玩家名字
+		optional CLAN_MEM_STATUS_TYPE status = 3; //成员状态
+		optional bytes headimgurl = 4; //头像 
+	}
+	repeated Member member_list = 8; //成员
+	optional bool dismiss = 9; //是否逻辑解散
+	message RoomHistory {
+		optional int64 room_id = 1; //房间ID	
+		optional int32 battle_time = 2; //对战时间
+	}
+	repeated RoomHistory battle_history = 10; //历史战绩
+	repeated SystemMessage message_list = 11; //消息列表
+	optional int32 online_mem_count = 12; //在线成员数量
+}
+
+/////////////////////////////////////////////////////
+// 物品逻辑存盘数据定义区
+/////////////////////////////////////////////////////
+message ItemEquipment {
+	optional int32 star = 1;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////
+//
+// Client<->Server协议
+//
+// 1.Server<->Client交互通过协议Meta传送，其中包含内容类型和内容MESSAGE数据;
+//
+// 2.每个协议必须包含META_TYPE，否则双方无法处理;
+//
+// 3.玩家ID用于解决中心服务器<->游戏逻辑服务器之间的内部协议处理; Client绝不可填;
+//
+/////////////////////////////////////////////////////
+
+message Meta {
+	optional META_TYPE type_t = 1; 
+	optional bytes stuff = 2;
+	optional int64 player_id = 3;
+}
+
+/////////////////////////////////////////////////////
+//客户端和服务器公用的数据定义区
+/////////////////////////////////////////////////////
+
+//通用错误码定义
+enum ERROR_TYPE {
+	ERROR_TYPE_NORMAL = 1;
+	ERROR_TYPE_INVENTORY_FULL = 2; //包裹已满
+}
+
+enum ERROR_SHOW_TYPE {
+	ERROR_SHOW_TYPE_NORMAL = 1; //通用错误
+	ERROR_SHOW_TYPE_MESSAGE_BOX = 2; //弹窗
+}
+
+enum ERROR_CODE {
+	ERROR_SUCCESS = 0; //成功
+	ERROR_INNER = 1; //系统内部错误
+	ERROR_DIAMOND_NOT_ENOUGH = 2; //钻石不足
+	ERROR_HUANLEDOU_NOT_ENOUGH = 3;	//欢乐豆不足
+	ERROR_INVENTORY_FULL = 4; //物品栏已满
+	ERROR_REWARD_HAS_GOT = 5; //奖励已领取
+	ERROR_HUANLEDOU_LIMIT = 6; //每日福利:欢乐豆不满足领取数量限制
+	ERROR_MALL_NOT_FOUND = 7; //商品未找到
+	ERROR_ACTIVITY_NOT_OPEN = 8; //活动尚未开启
+	ERROR_CLIENT_DATA = 9; //Client数据错误
+	ERROR_HAS_NO_PLAYER = 10; //该账号下没有这个角色
+	ERROR_DATABASE = 11; //数据库错误
+	ERROR_ROOM_CARD_NOT_ENOUGH = 12; //房卡不足
+	ERROR_VERSION_LIMIT = 13; //Client版本低
+	ERROR_ONLINE_PLAYERS_LIMIT = 14; //同时在线玩家最大限制
+	ERROR_LONGTIME_NO_OPERATION = 15; //长时间未操作
+
+	ERROR_ROOM_NOT_FOUNT = 20; //房间未找到
+	ERROR_ROOM_PASSWORD = 21; //房间密码错误
+	ERROR_ROOM_IS_FULL = 22; //房间玩家已满
+	ERROR_ROOM_NOT_AVAILABLE = 23; //没有可进入的房间
+	ERROR_ROOM_NO_PERMISSION = 24; //没有权限进行此操作
+	ERROR_ROOM_BEANS_MIN_LIMIT = 25; //加入房间，欢乐豆不满足下限
+	ERROR_ROOM_BEANS_MAX_LIMIT = 26; //加入房间，欢乐豆不满足上限
+	ERROR_ROOM_TYPE_NOT_FOUND = 27; //未找到该类型的房间
+	ERROR_ROOM_HAS_BEEN_IN = 28; //已经在房间内
+	ERROR_ROOM_GUEST_FORBID_ENTER = 29; //游客禁止进入
+	ERROR_ROOM_CARD_GAMES_FULL = 30; //局数已满，即玩家可以玩的局数不足
+	ERROR_ROOM_DISMISS_COOLDOWN = 31; //解散房间冷却中
+	ERROR_ROOM_BEEN_OVER = 32; //战局结束
+	ERROR_ROOM_BEEN_DISMISS = 33; //房间已经解散
+	ERROR_ROOM_PLAYBACK_NO_RECORD = 34; //尚未存储记录
+	ERROR_ROOM_AA_DIAMOND_NOT_ENOUGH = 35; //AA开房钻石不足
+	ERROR_ROOM_FRIEND_NOT_FORBID = 36; //禁止进入好友房
+	ERROR_ROOM_QUERY_NOT_FORBID = 37; //没有查询到房间信息
+	ERROR_ROOM_NO_RECORD = 38; //没有房间记录
+	
+	ERROR_GAME_NO_PERMISSION = 40; //没有操作权限
+	ERROR_GAME_PAI_UNSATISFIED = 41; //牌不满足
+	
+	ERROR_COMMON_REWARD_DATA = 50; //数据错误
+	ERROR_COMMON_REWARD_HAS_GOT = 51; //奖励已领取
+
+	ERROR_COOLDOWN_MATCHING = 60; //匹配冷却中
+
+	ERROR_CLAN_NAME_EMPTY = 71; //茶馆:名字不能为空
+	ERROR_CLAN_NAME_UPPER = 72; //茶馆:名字超过最大限制
+	ERROR_CLAN_HOSTER_UPPER = 73; //茶馆:创建数量超过限制
+	ERROR_CLAN_JOIN_UPPER = 74; //茶馆:加入数量超过限制
+	ERROR_CLAN_CREATE_INNER = 75; //茶馆:创建内部错误
+	ERROR_CLAN_FULL = 76; //茶馆:已满
+	ERROR_CLAN_ROOM_CARD_NOT_ENOUGH = 77; //茶馆:房卡不足
+	ERROR_CLAN_NOT_FOUND = 78; //茶馆:尚未找到
+	ERROR_CLAN_NO_PERMISSION = 79; //茶馆:没有权限
+	ERROR_CLAN_NO_RECORD = 80; //茶馆:没有记录
+	ERROR_CLAN_HAS_JOINED = 81; //茶馆:已在该茶馆
+	ERROR_CLAN_NAME_INVALID = 82; //茶馆:名字非法
+	ERROR_CLAN_ANNOUCEMENT_INVALID = 83; //茶馆:公告含有非法字符
+	ERROR_CLAN_NO_MEM = 84; //茶馆:没有成员
+}
+
+/////////////////////////////////////////////////////
+//通用协议类型
+/////////////////////////////////////////////////////
+enum META_TYPE {
+
+	///////////公共协议定义///////////
+	META_TYPE_SHARE_BEGIN = 1; //开始协议
+	META_TYPE_SHARE_CREATE_PLAYER = 2; //创建角色
+	META_TYPE_SHARE_CREATE_ROOM = 3; //创建房间
+	META_TYPE_SHARE_PAI_OPERATION = 4; //玩家牌操作
+	META_TYPE_SHARE_GAME_OPERATION = 5; //玩家游戏操作
+	META_TYPE_SHARE_COMMON_PROPERTY = 6; //玩家基础属性同步
+	META_TYPE_SHARE_BUY_SOMETHING = 7; //购买商品：游戏内商品交易
+	META_TYPE_SHARE_ENTER_ROOM = 8; //进入房间
+	META_TYPE_SHARE_SIGN = 9; //签到
+	META_TYPE_SHARE_LUCKY_PLATE = 10; //幸运转盘
+	META_TYPE_SHARE_RANDOM_SAIZI = 11; //打股子
+	META_TYPE_SHARE_SAY_HI = 12; //心跳
+	META_TYPE_SHARE_GUEST_LOGIN = 13; //游客登录
+	META_TYPE_SHARE_GAME_SETTING = 14; //游戏设置
+	META_TYPE_SHARE_UPDATE_CLIENT_DATA = 15; //Client信息
+	META_TYPE_SHARE_SYSTEM_CHAT = 16; //系统聊天
+	META_TYPE_SHARE_ROOM_HISTORY = 17; //历史对战表
+	META_TYPE_SHARE_RECHARGE = 18; //充值
+	META_TYPE_SHARE_PLAY_BACK = 19; //回放
+	META_TYPE_SHARE_MATCHING_STATS = 20; //匹配数据
+	META_TYPE_SHARE_CLAN_OPERATION = 21; //茶馆操作
+	META_TYPE_SHARE_COUNT = 50; //共享协议最大数量
+	///////////客户端发送数据///////////
+	META_TYPE_C2S_BEGIN = 51; //客户端开始协议
+	META_TYPE_C2S_LOGIN = 52; //登录游戏
+	META_TYPE_C2S_LOGOUT = 53; //退出游戏
+	META_TYPE_C2S_SELECT_SERVER = 54; //选择服务器
+	META_TYPE_C2S_ENTER_GAME = 55; //进入游戏(选择的角色)
+	META_TYPE_C2S_GET_REWARD = 56; //领取奖励
+	META_TYPE_C2S_LOAD_SCENE = 57; //加载场景
+	META_TYPE_C2S_RECONNECT = 58; //断线重连
+	META_TYPE_C2S_WECHAT_LOGIN = 59; //微信登陆
+	META_TYPE_C2S_SWITCH_ACCOUNT = 60; //切换账号
+	META_TYPE_C2S_GET_ROOM_DATA = 61; //获取当前房间数据
+	META_TYPE_C2S_UPDATE_ROOM = 62; //更新房间数据
+	META_TYPE_C2S_COUNT = 255; //客户端协议最大数量
+	///////////服务器发送数据///////////
+	META_TYPE_S2C_BEGIN = 501; //服务器开始协议
+	META_TYPE_S2C_TICKET = 502; //登录认证
+	META_TYPE_S2C_SERVER_LIST = 503; //游戏服务器列表(AS->C)
+	META_TYPE_S2C_PLAYERS = 504; //同步账号下角色数据(AS->C)      
+	META_TYPE_S2C_PLAYER_INFO = 505; //同步玩家角色数据(登录之后同步)
+	META_TYPE_S2C_ALERT_ERROR = 507; //错误码信息
+	META_TYPE_S2C_LIUJU = 508; //流局
+	META_TYPE_S2C_PAI_NOTIFY = 509; //通知Client玩家手中的牌或抓到的牌
+	META_TYPE_S2C_PAI_OPERATION_ALERT = 510; //提示玩家可以进行的操作
+	META_TYPE_S2C_COMMON_LIMIT = 511; //通用限制:主要用于Client界面控制
+	META_TYPE_S2C_COMMON_REWARD = 512; //通用奖励
+	META_TYPE_S2C_ROOM_INFO = 513; //同步房间数据
+	META_TYPE_S2C_GAME_CALCULATE = 514; //游戏结束结算
+	META_TYPE_S2C_GAME_INFO = 515; //同步游戏数据，比如庄家
+	META_TYPE_S2C_KILL_OUT = 516; //踢掉玩家
+	META_TYPE_S2C_ACTIVITY = 517; //活动数据
+	META_TYPE_S2C_SYSTEM_BROADCAST = 518; //系统广播
+	META_TYPE_S2C_PAI_PUSH_DOWN = 519; //推到牌
+	META_TYPE_S2C_GAMES_FULL = 520; //可玩局数已满
+	META_TYPE_S2C_WECHAT_INFOMATION = 521; //微信信息
+	META_TYPE_S2C_GAME_START = 522; //开局数据
+	META_TYPE_S2C_ROOM_CALCULATE = 523; //房间结束结算
+	META_TYPE_S2C_ROOM_DISMISS = 524; //解散房间
+	META_TYPE_S2C_ROOM_STATE = 525; //玩家房间状态
+	META_TYPE_S2C_ROOM_HISTORY = 526; //历史记录
+	META_TYPE_S2C_ROOM_ALL = 527; //房间全部数据同步
+	META_TYPE_S2C_ROOM_IN = 528; //所在房间
+	META_TYPE_S2C_ROOM_QUERY = 529; //房间查询
+	META_TYPE_S2C_COUNT = 1000; //服务器协议最大数量
+	///////////服务器之间协议数据///////////
+	META_TYPE_S2S_REGISTER = 1001; //注册逻辑服务器
+	META_TYPE_S2S_KICKOUT_PLAYER = 1002; //踢掉玩家
+	META_TYPE_S2S_GMT_INNER_META = 1003; //内部GMT协议
+	META_TYPE_S2S_PLAYER_STATE = 1004; //服务器间玩家状态同步
+	META_TYPE_S2S_CLAN_ROOM_START_OR_OVER = 1005; //茶馆房开局或结束//用于在CS处扣除房卡
+	META_TYPE_S2S_CLAN_ROOM_SYNC = 1006; //茶馆房数据实时同步
+	META_TYPE_S2S_CLAN_OPERATION = 1007; //茶馆操作结果数据同步
+}
+
+/////////////////////////////////////////////////////
+//
+//客户端发送协议定义区
+//
+/////////////////////////////////////////////////////
+
+//创建角色
+message CreatePlayer {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_CREATE_PLAYER ];
+	optional int64 player_id = 2;
+}
+
+//账号平台
+enum ACCOUNT_TYPE {
+	ACCOUNT_TYPE_8HERE = 1; //官方平台
+	ACCOUNT_TYPE_GUEST = 2; //官方平台：游客模式
+	ACCOUNT_TYPE_WECHAT = 3; //微信
+	ACCOUNT_TYPE_QQ = 4; //手机QQ
+}
+
+//充值类型
+enum RECHARGE_TYPE {
+	RECHARGE_TYPE_IOS = 1; //苹果
+	RECHARGE_TYPE_ANDROID = 2; //安卓官方
+}
+
+//登录游戏
+message Login {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_C2S_LOGIN ];
+	optional Account account = 2;
+}
+
+//通过CODE获取ACCESS_TOCKEN
+//
+//刷新ACCESS_TOCKEN有效期
+message WechatAccessToken {
+	optional bytes access_token = 1; //接口调用凭证
+	optional int32 expires_in = 2; //access_token接口调用凭证超时时间，单位（秒）
+	optional bytes refresh_token = 3; //用户刷新access_token
+	optional bytes openid = 4; //授权用户唯一标识
+	optional bytes scope = 5; //用户授权的作用域，使用逗号（,）分隔
+	optional bytes unionid = 6; // 当且仅当该移动应用已获得该用户的userinfo授权时，才会出现该字段
+}
+
+//微信失败信息
+message WechatError {
+	optional int32 errcode = 1;
+	optional bytes errmsg = 2;
+}
+
+//微信登陆
+message WechatLogin {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_C2S_WECHAT_LOGIN ];
+	optional WechatUnion wechat = 2; 
+}
+
+//切换账号
+message SwitchAccount {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_C2S_SWITCH_ACCOUNT ];
+	optional bytes account_name = 2; //账号
+	optional int64 player_id = 3; //角色
+}
+
+//获取房间数据
+message GetRoomData {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_C2S_GET_ROOM_DATA ];
+	optional int64 room_id = 2; //房间ID，用于校验
+	optional ROOM_SYNC_TYPE reason = 3; //同步原因
+}
+
+//更新房间数据
+message UpdateRoom {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_C2S_UPDATE_ROOM ];
+	optional int64 voice_member_id = 2; //房间语音成员ID
+}
+
+//微信数据
+message WechatUnion {
+	optional bytes openid = 1; //普通用户的标识，对当前开发者帐号唯一
+	optional bytes nickname = 2; //普通用户昵称
+	optional int32 sex = 3; //普通用户性别，1为男性，2为女性
+	optional bytes province = 4; //普通用户个人资料填写的省份
+	optional bytes city = 5; //普通用户个人资料填写的城市
+	optional bytes country = 6; //国家，如中国为CN
+	optional bytes headimgurl = 7; //用户头像，最后一个数值代表正方形头像大小（有0、46、64、96、132数值可选，0代表640*640正方形头像），用户没有头像时该项为空
+	repeated bytes privilege = 8; //用户特权信息，json数组，如微信沃卡用户为（chinaunicom）
+	optional bytes unionid = 9; //用户统一标识。针对一个微信开放平台帐号下的应用，同一用户的unionid是唯一的。
+}
+
+//退出游戏
+message Logout {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_C2S_LOGOUT ];
+}
+
+//进入游戏
+//
+//实际进入的是游戏大厅
+//
+message EnterGame {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_C2S_ENTER_GAME ];
+	optional int64 player_id = 2; //角色ID
+}
+
+//更新Client信息
+message UpdateClientData {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_UPDATE_CLIENT_DATA ];
+	optional ClientInfomation client_info = 2; 
+}
+
+enum CHAT_TYPE {
+	CHAT_TYPE_TEXT = 1; //文本
+	CHAT_TYPE_FACE = 2; //表情
+}
+
+//系统聊天
+message SystemChat {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_SYSTEM_CHAT ];
+	optional CHAT_TYPE chat_type = 2;
+	optional POSITION_TYPE position = 3; //位置
+	optional int32 index = 4; //索引内容
+}
+
+//房间数据
+message Room {
+	optional int64 room_id = 1; //房间ID
+	optional ROOM_TYPE room_type = 2; //房间类型
+	optional bytes enter_password = 3; //房间密码：仅好友房存在
+	optional RoomOptions options = 4; //房间设置
+	optional int64 clan_id = 5; //茶馆ID
+}
+
+/////////////////////////////////////////////////////
+//好友房开放设置：
+//
+//模式选择：经典模式  高番模式
+//
+//额外番型：站立胡 带夹胡 旋风杠 宝牌 可断门 清一色
+//
+//封顶倍数：16倍 32倍 不封顶(0)
+//
+//开设局数：4局  8局
+/////////////////////////////////////////////////////
+
+//创建房间
+message CreateRoom {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_CREATE_ROOM ];
+	optional Room room = 2; //房间信息
+}
+
+//进入房间
+message EnterRoom {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_ENTER_ROOM ];
+	optional Room room = 2; //房间信息
+	optional ERROR_CODE error_code = 3; //返回结果：是否可以进入
+	enum ENTER_TYPE {
+		ENTER_TYPE_ENTER = 1; //进入
+		ENTER_TYPE_CANCEL = 2; //取消进入，适合在匹配过程取消
+	}
+	optional ENTER_TYPE enter_type = 4; //操作类型
+}
+
+//签到
+message Sign {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_SIGN ];
+	optional bool success = 2; //签到成功
+}
+
+//幸运转盘
+message PlayerLuckyPlate {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_LUCKY_PLATE ];
+	optional int64 plate_id = 2; //幸运转盘ID[LuckyPlate]数据
+	optional int32 result = 3; //转到奖励索引
+}
+
+//打股子(1-6)
+message RandomSaizi {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_RANDOM_SAIZI ];
+	enum REASON_TYPE {
+		REASON_TYPE_START = 1; //开局
+		REASON_TYPE_TINGPAI = 2; //听牌
+		REASON_TYPE_HUIPAI = 3; //会儿牌
+	}
+	optional REASON_TYPE reason_type = 2; //原因-无特殊处理
+	repeated int32 random_result = 3; //随机值(1-6)
+	optional PaiElement pai = 4; //牌值//宝牌
+	optional bool has_rand_saizi = 5; //是否打色子
+}
+
+//S<->C 维持
+message SayHi {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_SAY_HI ];
+	optional int32 heart_count = 2;
+}
+
+//游客登录
+message GuestLogin {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_GUEST_LOGIN ];
+	optional bytes account = 2; //服务器生成账号数据
+}
+
+message PlayerSetting {
+	optional bool music = 1 [ default = true ]; //是否开启音乐
+	optional bool voice = 2 [ default = true ]; //是否开启语音
+	optional bool audio = 3 [ default = true ]; //是否开启音效
+	optional bool click_push = 4; //是否单击出牌
+	optional ZHUOBU_TYPE zhuobu_type = 5;
+	optional CARD_COLOR_TYPE card_color_type = 6;
+}
+
+//桌布颜色
+enum ZHUOBU_TYPE {
+	ZHUOBU_TYPE_GREEN = 1; //绿色
+	ZHUOBU_TYPE_BLUE = 2; //蓝色
+	ZHUOBU_TYPE_RED = 3; //红色
+}
+
+//牌背颜色
+enum CARD_COLOR_TYPE {
+	CARD_COLOR_TYPE_GREEN = 1; //绿色
+	CARD_COLOR_TYPE_BLUE = 2; //蓝色
+	CARD_COLOR_TYPE_GOLDEN = 3; //金色
+}
+
+//游戏设置
+message GameSetting {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_GAME_SETTING ];
+	optional PlayerSetting game_setting = 2;
+}
+
+//历史对战表
+message BattleHistory {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_ROOM_HISTORY ];
+	optional int32 start_index = 2;
+	optional int32 end_index = 3;
+	repeated RoomHistory history_list = 4; //最新5条历史记录
+	optional int64 room_id = 5; //房间战绩
+}
+
+//充值
+message UserRecharge {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_RECHARGE ];
+	optional RECHARGE_TYPE recharge_type = 2; //充值类型
+	optional bytes product_id = 3; //商品ID//商品名称
+	optional int32 price = 4; //价格
+}
+
+//回放
+message PlayBack {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_PLAY_BACK ];
+	optional int64 room_id = 2; //房间ID
+	optional RoomOptions options = 3; //房间设置
+	optional int32 game_index = 4; //牌局数(1~8/16)
+	message PlayerElement {
+		optional int64 player_id = 1; //玩家ID
+		optional POSITION_TYPE position = 2; //玩家当前座次
+		optional CommonProp common_prop = 3; //玩家基本数据
+		optional WechatUnion wechat = 4; //微信个人信息
+		repeated MultiplePai pai_list = 5; //开局牌数据
+	}
+	repeated PlayerElement player_list = 5; //开局牌数据
+	repeated PaiOperation oper_list = 6; //牌局各个玩家操作
+	optional int32 create_time = 7; //房间创建时间
+}
+
+//获取奖励
+message GetReward {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_C2S_GET_REWARD ];
+	enum GET_REWARD_REASON {
+		GET_REWARD_REASON_DAILY_BONUS = 1; //每日登陆奖励
+		GET_REWARD_REASON_DAILY_ALLOWANCE = 2; //每日补助奖励
+		GET_REWARD_REASON_SHARED = 3; //朋友圈分享
+	}
+	optional GET_REWARD_REASON reason = 2;
+	optional int64 reward_id = 3;
+}
+
+//麻将：玩家进行或者可以进行的牌操作
+enum PAI_OPER_TYPE {
+	PAI_OPER_TYPE_BEGIN = 0; //无操作
+	PAI_OPER_TYPE_DAPAI = 1; //打牌
+	PAI_OPER_TYPE_HUPAI = 2; //胡牌
+	PAI_OPER_TYPE_QIANGGANG = 3; //抢杠胡
+	PAI_OPER_TYPE_GANGPAI = 4; //明杠牌
+	PAI_OPER_TYPE_PENGPAI = 5; //碰牌
+	PAI_OPER_TYPE_CHIPAI = 6; //吃牌
+	PAI_OPER_TYPE_GIVEUP = 7; //放弃操作
+	PAI_OPER_TYPE_XUANFENG_FENG = 8; //旋风杠//风牌
+	PAI_OPER_TYPE_XUANFENG_JIAN = 9; //旋风杠//箭牌
+	PAI_OPER_TYPE_ANGANGPAI = 10; //暗杠牌
+	PAI_OPER_TYPE_TINGPAI = 11; //听牌
+	PAI_OPER_TYPE_BAOPAI = 12; //宝牌
+	PAI_OPER_TYPE_FAPAI = 13; //发牌
+	PAI_OPER_TYPE_LIUJU = 14; //流局
+	PAI_OPER_TYPE_CANCEL = 15; //取消
+	PAI_OPER_TYPE_HUIPAI = 16; //会儿牌
+	PAI_OPER_TYPE_ZHUIFENG_FENG = 17; //追风杠//风牌
+	PAI_OPER_TYPE_ZHUIFENG_JIAN = 18; //追风杠//箭牌
+	PAI_OPER_TYPE_COUNT = 19; //操作总数
+}
+
+//牌操作缓存
+message PaiOperationCache {
+	optional int64 player_id = 1; //操作玩家
+	optional int64 source_player_id = 2; //牌来自玩家
+	optional int32 time_out = 3; //超时时间
+	optional PaiElement pai = 4; //待处理的牌
+	repeated PAI_OPER_TYPE oper_list = 5; //可操作列表
+	repeated PaiElement ting_pais = 6; //听牌列表
+	optional PaiOperationAlert alert = 7; //缓存操作
+}
+
+//牌操作
+message PaiOperation {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_PAI_OPERATION ];
+	optional PAI_OPER_TYPE oper_type = 2; //牌操作
+	optional POSITION_TYPE position = 3; //位置
+	repeated PaiElement pais = 4; //牌数据
+	optional PaiElement pai = 5; //牌数据
+}
+
+//房间内游戏内操作、状态
+enum GAME_OPER_TYPE {
+	GAME_OPER_TYPE_NULL = 1; //无状态
+	GAME_OPER_TYPE_START = 2; //开始游戏
+	GAME_OPER_TYPE_LEAVE = 3; //离开游戏
+	GAME_OPER_TYPE_KICKOUT = 4; //踢人
+	GAME_OPER_TYPE_DISMISS_AGREE = 5; //解散房间：同意//如果是第一个就是发起者
+	GAME_OPER_TYPE_DISMISS_DISAGREE = 6; //解散房间：不同意
+	GAME_OPER_TYPE_HOSTER_DISMISS = 7; //房主解散
+	GAME_OPER_TYPE_OFFLINE = 8; //离线
+	GAME_OPER_TYPE_ONLINE = 9; //在线
+	GAME_OPER_TYPE_JIAOZHUANG = 10; //叫庄
+}
+
+//游戏操作
+message GameOperation {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_GAME_OPERATION ];
+	optional GAME_OPER_TYPE oper_type = 2; //操作类型
+	optional int64 source_player_id = 3; //来自XX玩家的操作
+	optional int64 destination_player_id = 4; //针对XX玩家的操作：踢人
+	optional ERROR_CODE error_code = 5;
+	optional int32 beilv = 6; //倍率//GAME_OPER_TYPE_START//GAME_OPER_TYPE_JIAOZHUANG
+}
+
+//商城购买
+message BuySomething {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_BUY_SOMETHING ];
+	optional int64 mall_id = 2; //购买商品ID[Mall]数据
+	optional ERROR_CODE result = 3; //购买结果(0-成功)
+}
+
+//加载场景
+message LoadScene {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_C2S_LOAD_SCENE ];
+	optional LOAD_SCENE_TYPE load_type = 2; //加载进度
+	optional int64 scene_id = 3; //加载的场景ID///房间ID
+}
+
+//断线重连
+message ReConnect {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_C2S_RECONNECT ];
+	optional int64 player_id = 2; //角色ID
+	optional Account account = 3; //账号数据
+}
+
+//匹配房数据
+message MatchStats {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_MATCHING_STATS ];
+	message MatchingRoom {
+		optional ROOM_TYPE room_type = 1; //匹配房间类型	
+		optional int32 player_count = 2; //匹配玩家
+	}
+	repeated MatchingRoom room_list = 2; //匹配房间信息
+}
+
+enum CLAN_OPER_TYPE {
+	CLAN_OPER_TYPE_CREATE = 1; //创建茶馆
+	CLAN_OPER_TYPE_JOIN = 2; //加入茶馆
+	CLAN_OPER_TYPE_EDIT = 3; //修改茶馆公告//名字
+	CLAN_OPER_TYPE_DISMISS = 4; //解散茶馆
+	CLAN_OPER_TYPE_RECHARGE = 5; //茶馆充值
+	CLAN_OPER_TYPE_MEMEBER_AGEE = 6; //同意成员加入
+	CLAN_OPER_TYPE_MEMEBER_DISAGEE = 7; //拒绝成员加入
+	CLAN_OPER_TYPE_MEMEBER_DELETE = 8; //删除成员
+	CLAN_OPER_TYPE_MEMEBER_QUIT = 9; //成员主动退出茶馆
+	CLAN_OPER_TYPE_MEMEBER_QUERY = 10; //查询玩家状态
+	CLAN_OPER_TYPE_ROOM_LIST_QUERY = 11; //查询房间列表：详细信息
+	CLAN_OPER_TYPE_CLAN_LIST_QUERY = 12; //查询茶馆列表
+	CLAN_OPER_TYPE_ROOM_GAMING_LIST_QUERY = 13; //进行中房间列表查询
+}
+	
+enum BRIEF_TYPE {
+	BRIEF_TYPE_HOSTER = 1; //馆长
+	BRIEF_TYPE_JOINER = 2; //加入
+}
+
+//茶馆简要讯息//列表显示信息
+message ClanBrief {
+	optional int64 clan_id = 1; //全局ID
+	optional bytes name = 2; //名字
+	optional int32 created_time = 3; //创建时间
+	optional int64 hoster_id = 4; //馆长
+	optional bytes hoster_name = 5; //馆长名字
+	optional int32 mem_count = 6; //成员数量
+	optional int32 online_mem_count = 7; //在线成员数量
+}
+
+//茶馆操作
+message ClanOperation {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_CLAN_OPERATION ];
+	optional CLAN_OPER_TYPE oper_type = 2; //茶馆操作
+	optional int64 clan_id = 3; //茶馆ID
+	optional int32 oper_result = 4; //操作结果
+	optional bytes name = 5; //名字
+	optional bytes announcement = 6; //公告
+	optional int64 dest_player_id = 7; //目标成员
+	optional int32 dest_sys_message_index = 8; //针对操作索引//Clan:message_list索引
+	optional int32 recharge_count = 9; //充值
+	optional Clan clan = 10; //茶馆信息//创建成功会返回//查询玩家列表会返回
+	optional int32 query_start_index = 11; //列表查询:起始索引
+	optional int32 query_end_index = 12; //列表查询:结束索引
+	repeated int64 room_gaming_list = 13; //进行中房间列表同步
+	repeated RoomQueryResult room_list = 14; //房间详细信息列表
+	optional BRIEF_TYPE brief_type = 15; //查询列表类型
+	repeated ClanBrief clan_list = 16; //茶馆列表简要讯息//列表显示信息
+	optional int32 server_id = 17; //服务器内服标识
+}
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+//服务器发送协议定义区
+/////////////////////////////////////////////////////
+
+//同步账号下角色数据
+message PlayerList {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_PLAYERS ];
+	repeated int64 player_list = 2; //角色ID
+	optional WechatUnion wechat = 3; //微信个人信息
+}
+
+//同步玩家角色数据
+message PlayerInformation {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_PLAYER_INFO ];
+	optional Player player = 2;
+}
+
+//错误码提示
+message AlertMessage {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_ALERT_ERROR ];
+	optional ERROR_TYPE error_type = 2; 
+	optional ERROR_SHOW_TYPE error_show_type = 3;
+	optional int32 error_code = 4; //ERROR_CODE
+}
+
+//流局
+message LiuJu {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_LIUJU ];
+	message LJElement {
+		optional int64 player_id = 2;
+		optional PaiElement pai = 3;
+	}
+	repeated LJElement elements = 2; //数据 
+}
+
+//麻将数据同步
+message PaiNotify {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_PAI_NOTIFY ];
+	//发送牌数据缘由
+	enum CARDS_DATA_TYPE {
+		CARDS_DATA_TYPE_START = 1; //开局
+		CARDS_DATA_TYPE_FAPAI = 2; //发牌
+		CARDS_DATA_TYPE_SYNC = 3; //同步
+	}
+	optional int64 player_id = 2; //发牌玩家
+	optional CARDS_DATA_TYPE data_type = 3; //缘由
+	//多张牌数据 
+	message MutiPai { 
+		optional CARD_TYPE card_type = 1; //牌类型：饼、条...
+		repeated int32 cards = 2; //牌值
+	}
+	repeated MutiPai pais = 4; //数据：开局，发13或14张牌
+	//单张牌数据 
+	message SinglePai { 
+		optional CARD_TYPE card_type = 1; //牌类型：饼、条...
+		optional int32 card_value = 2; //牌值
+	}
+	optional SinglePai pai = 5; //数据：发牌，发1张牌
+	optional int32 cards_remain = 6; //剩余牌数量
+}
+
+//玩家基础属性同步
+message SyncCommonProperty {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_COMMON_PROPERTY ];
+	//同步数据的原由
+	enum SYNC_REASON_TYPE { 
+		SYNC_REASON_TYPE_SELF = 1; //发送玩家自己数据,可能是因为改了角色名称//欢乐豆变化//钻石变化.
+		SYNC_REASON_TYPE_GET = 2; //玩家获取
+	}
+	optional SYNC_REASON_TYPE reason_type = 2;
+	optional int64 player_id = 3; //XX玩家的数据
+	optional CommonProp common_prop = 4; //玩家基本数据
+}
+
+//提示玩家可以进行的操作
+message PaiOperationAlert {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_PAI_OPERATION_ALERT ];
+	message AlertElement {
+		optional PaiElement pai = 1; //牌数据
+		repeated PAI_OPER_TYPE oper_list = 2; //玩家对应牌可操作的所有情况：比如吃、碰、胡都可以.
+	}
+	repeated AlertElement pais = 2; //所有牌数据
+}
+
+//通用限制数据同步
+message SyncCommonLimit {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_COMMON_LIMIT ];
+	optional PlayerCommonLimit common_limit = 2; //玩家所有通用限制数据
+}
+
+//通用奖励
+message SyncCommonReward {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_COMMON_REWARD ];
+	optional int64 common_reward_id = 2; //通用奖励ID[CommonReward]数据
+	optional int32 error_code = 3;
+}
+
+//房间状态同步类型
+enum ROOM_SYNC_TYPE {
+	ROOM_SYNC_TYPE_NORMAL = 1; //正常同步
+	ROOM_SYNC_TYPE_STATE_CHANGED = 2; //玩家状态变化
+	ROOM_SYNC_TYPE_QUERY = 3; //查询//外服获取
+}
+
+//房间数据
+message RoomInformation {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_ROOM_INFO ];
+	optional ROOM_SYNC_TYPE sync_type = 2; //同步类型
+	message Player {
+		optional POSITION_TYPE position = 1; //位置
+		optional int64 player_id = 2;
+		optional GAME_OPER_TYPE oper_type = 3; //操作状态//准备//
+		optional CommonProp common_prop = 4; //玩家基本数据
+		optional WechatUnion wechat = 5; //微信个人信息
+		optional bytes ip_address = 6; //IP地址
+		message DistanceElement {
+			optional POSITION_TYPE position = 1; //玩家位置
+			optional double distance = 2; //相对距离
+		}
+		repeated DistanceElement dis_list = 7;
+		optional int64 voice_member_id = 8; //房间语音成员ID
+	}
+	repeated Player player_list = 3;
+}
+
+//结算类型
+enum CALCULATE_TYPE {
+	CALCULATE_TYPE_HUPAI = 1; //单局//胡牌
+	CALCULATE_TYPE_LIUJU = 2; //单局//流局
+	CALCULATE_TYPE_FULL = 3; //房间内总结算//满局//即正常玩完8局或者16局
+	CALCULATE_TYPE_DISMISS = 4; //房间内总结算//解散房间
+}
+
+//麻将单场游戏结算
+message GameCalculate {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_GAME_CALCULATE ];
+	optional CALCULATE_TYPE calculte_type = 2;
+	optional POSITION_TYPE dianpao_player_position = 3;
+	optional PaiElement baopai = 4; //宝牌
+	optional GameRecord record = 5; //积分结算
+	optional FAN_TYPE max_fan_type = 6; //最大番数
+}
+
+//好友房游戏结算
+message RoomRecord {
+	optional int64 player_id = 1; //玩家ID
+	optional bytes nickname = 2; //玩家名称
+	optional bytes headimgurl = 3; //头像
+	optional int32 score = 4; //积分总和
+	optional int32 pk_count = 5; //对局数
+	optional int32 banker_count = 6; //庄家数
+	optional int32 win_count = 7; //胜局数
+	optional int32 dianpao_count = 8; //点炮数
+	optional int32 loubao_count = 9; //搂宝次数
+	optional int32 jinbao_count = 10; //进宝次数
+}
+
+message RoomCalculate {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_ROOM_CALCULATE ];
+	optional CALCULATE_TYPE calculte_type = 2;
+	repeated RoomRecord record = 3; //好友房战绩
+}
+
+//房间数据
+message GameInformation {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_GAME_INFO ];
+	optional int64 banker_player_id = 2; //庄家
+}
+
+//踢掉缘由
+enum KICK_OUT_REASON {
+	KICK_OUT_REASON_BEGIN = 0;
+	KICK_OUT_REASON_DISCONNECT = 1; //网络断开
+	KICK_OUT_REASON_OTHER_LOGIN = 2; //玩家登陆
+	KICK_OUT_REASON_CHANGE_SERVER = 3; //切换服务器
+	KICK_OUT_REASON_LOGOUT = 4; //退出登陆
+	KICK_OUT_REASON_LEAVE_ROOM = 5; //离开房间
+}
+//踢出玩家
+message KickOut {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_KILL_OUT ];
+	optional int64 player_id = 2;
+	optional KICK_OUT_REASON reason = 3; //踢掉玩家缘由
+}
+
+//活动
+message SyncActivity {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_ACTIVITY ];
+	message ActivityElement {
+		optional int64 activity_id = 2; //活动ID
+		optional bool open = 3; //开启
+	}
+	repeated ActivityElement activity_list = 2; //活动列表
+}
+
+//广播类型
+enum SYSTEM_BROADCAST_TYPE { 
+	SYSTEM_BROADCAST_TYPE_SCROLL = 1; //滚动屏幕//跑马灯
+	SYSTEM_BROADCAST_TYPE_CHAT = 2; //聊天窗
+} 
+
+//系统广播
+message SystemBroadcasting {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_SYSTEM_BROADCAST ];
+	optional SYSTEM_BROADCAST_TYPE broad_cast_type = 2; //广播类型 
+	optional bytes content = 3; //内容
+}
+
+message MultiplePai { 
+	optional CARD_TYPE card_type = 1; //牌类型
+	repeated int32 cards = 2; //牌值
+}
+
+//推倒牌
+message PaiPushDown {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_PAI_PUSH_DOWN ];
+	message PlayerElement {
+		optional int64 player_id = 1; //玩家ID
+		optional POSITION_TYPE position = 2; //玩家当前座次
+		repeated MultiplePai pai_list = 3; //牌数据
+	}
+	repeated PlayerElement player_list = 2; //各个玩家牌
+}
+
+//局数不足
+message GamesFull {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_GAMES_FULL ];
+	optional int32 rounds = 2; //局数
+}
+
+//微信数据
+message WeChatInfo {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_WECHAT_INFOMATION ];
+	optional WechatUnion wechat = 2; //微信成功数据
+	optional WechatError wechat_error = 3; //微信失败数据
+}
+
+//开局数据
+message GameStart {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_GAME_START ];
+	optional int32 total_rounds = 2; //总局数
+	optional int32 current_rounds = 3; //当前局数
+}
+
+message RoomDisMiss {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_ROOM_DISMISS ];
+	optional int64 room_id = 2;
+	message RoomElement {
+		optional int64 player_id = 1;
+		optional POSITION_TYPE position = 2; //玩家当前座次
+		optional GAME_OPER_TYPE oper_type = 3; 
+	}
+	repeated RoomElement list = 3;
+}
+
+//玩家房间状态
+message RoomState {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_ROOM_STATE ];
+	optional int64 room_id = 2;
+	optional GAME_OPER_TYPE oper_type = 3;
+}
+
+//玩家历史对战表
+message BattleList {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_ROOM_HISTORY ];
+	repeated int64 room_list = 2; //列表
+}
+
+//房间全部数据
+message RoomAll {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_ROOM_ALL ];
+	optional int32 current_rounds = 2; //当前局数
+	optional int32 remain_cards_count = 3; //当前剩余牌数
+	repeated int32 saizi_random_result = 4; //开局股子数值
+	optional PaiElement baopai = 5; //宝牌//如果玩家听牌则有
+	repeated PlayerBrief player_brief_list = 6; //玩家列表
+	message Player {
+		optional int64 player_id = 1; //玩家
+		optional POSITION_TYPE position = 2; //位置
+		optional int32 pai_count_inhand = 3; //墙里牌数量//如果非自己则显示数量
+		repeated MultiplePai pai_inhand = 4; //墙里牌数据//如果自己则显示牌值
+		repeated PaiElement pai_outhand = 5; //墙外牌数据
+		repeated PaiElement minggang_list = 6; //明杠列表//只有一个牌
+		repeated PaiElement angang_list = 7; //暗杠列表//只有一个牌
+		optional int32 fenggang_count = 8; //风杠数量
+		optional int32 jiangang_count = 9; //箭杠数量
+		repeated PaiElement pai_pool = 10; //门前牌池
+		optional bool tingpai = 11; //玩家是否听牌
+		repeated PaiElement zhuifeng_gang_list = 12; //追风杠列表//只有一个牌
+		repeated PaiElement zhuijian_gang_list = 13; //追箭杠列表//只有一个牌
+	}
+	repeated Player player_list = 7; //玩家详细信息
+	optional POSITION_TYPE zhuang_position = 8; //庄家位置
+	optional POSITION_TYPE curr_operator_position = 9; //当前操作玩家位置
+	repeated GameRecord list = 10; //本次游戏历史战绩列表
+	optional PaiElement zhuapai = 11; //当前玩家最近一次抓牌
+	optional PaiElement huipai = 12; //会儿牌//如果选择则有
+}
+
+//玩家房间变更
+message RoomBeenIn {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_ROOM_IN ];
+	optional int64 room_id = 2;
+}
+
+//房间数据查询
+message RoomQueryResult {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_ROOM_QUERY ];
+	optional int64 room_id = 2; //房间ID
+	optional int32 create_time = 3; //房间创建时间
+	optional RoomOptions options = 4; //房间玩法
+	optional RoomInformation information = 5; //玩家数据
+	optional int64 clan_id = 6; //茶馆ID
+	optional int32 curr_count = 7; //第X局//如果是0表示尚未开局
+}
+
+/////////////////////////////////////////////////////
+//
+//服务器内部协议定义
+//
+/////////////////////////////////////////////////////
+
+enum ROLE_TYPE {
+	ROLE_TYPE_NULL = 0; 
+	ROLE_TYPE_PLAYER = 1; //玩家
+	ROLE_TYPE_GAME_SERVER = 2; //游戏逻辑服务器
+}
+//注册服务器
+message RegisterServer {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2S_REGISTER ];
+	optional ROLE_TYPE role_type = 2; 
+	optional int64 global_id = 3; 
+}
+
+//踢掉玩家
+message KickOutPlayer {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2S_KICKOUT_PLAYER ];
+	optional KICK_OUT_REASON reason = 2;
+	optional int64 player_id = 3; 
+}
+
+//GMT命令
+message GmtInnerMeta {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2S_GMT_INNER_META ];
+	optional bytes inner_meta = 2;
+}
+
+//玩家状态
+message PlayerState {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2S_PLAYER_STATE ];
+	optional GAME_OPER_TYPE oper_type = 2;
+}
+
+enum CLAN_ROOM_STATUS_TYPE {
+	CLAN_ROOM_STATUS_TYPE_START = 1; //开局
+	CLAN_ROOM_STATUS_TYPE_OVER = 2; //结束
+}
+//茶馆开局
+message ClanRoomStatusChanged {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2S_CLAN_ROOM_START_OR_OVER ];
+	optional CLAN_ROOM_STATUS_TYPE status = 2;
+	optional Room room = 3; //房间
+	optional int32 created_time = 4; //创建房间
+}
+
+//茶馆房实时同步
+message ClanRoomSync {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2S_CLAN_ROOM_SYNC ];
+	optional bytes room_status = 2; //房间//RoomQueryResult数据包装
+}
+
+message ClanOperationSync {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2S_CLAN_OPERATION ];
+	optional int64 player_id = 2;
+	optional ClanOperation operation = 3; 
+}

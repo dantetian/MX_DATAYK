@@ -1,0 +1,197 @@
+"标识ID
+","版本
+","名称
+","显示名称
+","描述
+","番数量
+","[1]-番类型
+","[1]-名称
+","[1]-番数
+","[2]-番类型
+","[2]-名称
+","[2]-番数
+","[3]-番类型
+","[3]-名称
+","[3]-番数
+","[4]-番类型
+","[4]-名称
+","[4]-番数
+","[5]-番类型
+","[5]-名称
+","[5]-番数
+","[6]-番类型
+","[6]-名称
+","[6]-番数
+","[7]-番类型
+","[7]-名称
+","[7]-番数
+","[8]-番类型
+","[8]-名称
+","[8]-番数
+","[9]-番类型
+","[9]-名称
+","[9]-番数
+","[10]-番类型
+","[10]-名称
+","[10]-番数
+","[11]-番类型
+","[11]-名称
+","[11]-番数
+","[12]-番类型
+","[12]-名称
+","[12]-番数
+","[13]-番类型
+","[13]-名称
+","[13]-番数
+","[14]-番类型
+","[14]-名称
+","[14]-番数
+","[15]-番类型
+","[15]-名称
+","[15]-番数
+","[16]-番类型
+","[16]-名称
+","[16]-番数
+","[17]-番类型
+","[17]-名称
+","[17]-番数
+","[18]-番类型
+","[18]-名称
+","[18]-番数
+","[19]-番类型
+","[19]-名称
+","[19]-番数
+","[20]-番类型
+","[20]-名称
+","[20]-番数
+","[21]-番类型
+","[21]-名称
+","[21]-番数
+","[22]-番类型
+","[22]-名称
+","[22]-番数
+","[23]-番类型
+","[23]-名称
+","[23]-番数
+","[24]-番类型
+","[24]-名称
+","[24]-番数
+","[25]-番类型
+","[25]-名称
+","[25]-番数
+","[26]-番类型
+","[26]-名称
+","[26]-番数
+","[27]-番类型
+","[27]-名称
+","[27]-番数
+","[28]-番类型
+","[28]-名称
+","[28]-番数
+","[29]-番类型
+","[29]-名称
+","[29]-番数
+","[30]-番类型
+","[30]-名称
+","[30]-番数
+","城市
+"
+720898,"VERSION_TYPE_GLOBAL [全球统一数据
+]",建平番数,建平番数,基础番,26,"FAN_TYPE_HAI_DI_LAO [海底捞
+]",海底捞月,1,"FAN_TYPE_GANG_SHANG_KAI [杠上开(杠次)
+]",杠上开花,1,"FAN_TYPE_LIU_LEI [流泪
+]",杠流泪,1,"FAN_TYPE_MING_PIAO [明飘
+]",明飘,3,"FAN_TYPE_PIAO_HU [飘胡
+]",飘胡,2,"FAN_TYPE_SI_GUI_YI [四归一
+]",四归一,0,"FAN_TYPE_LOU_BAO [搂宝//摸宝
+]",搂宝,0,"FAN_TYPE_SAN_JIA_BI_MEN [三家闭门
+]",三家闭门,1,"FAN_TYPE_QING_YI_SE [清一色
+]",清一色,0,"FAN_TYPE_MING_GANG [明杠
+]",杠,0,"FAN_TYPE_AN_GANG [暗杠
+]",暗杠,1,"FAN_TYPE_JIN_BAO [进宝
+]",,0,"FAN_TYPE_ZHAN_LI [站立
+]",,0,"FAN_TYPE_DUAN_MEN [断门
+]",,0,"FAN_TYPE_XUAN_FENG_GANG [旋风杠//风杠
+]",,0,"FAN_TYPE_JIA_HU_NORMAL [普通夹胡
+]",夹胡,1,"FAN_TYPE_JIA_HU_MIDDLE [中等夹胡(3/7)
+]",边胡,1,"FAN_TYPE_JIA_HU_HIGHER [高番夹胡(5)//已废弃
+]",,1,"FAN_TYPE_PIAO_WEIHU [明飘未胡
+]",明飘未胡,0,"FAN_TYPE_PINGHU [平胡
+]",平胡,0,"FAN_TYPE_BAOSANJIA [包三家
+]",点炮包三家,0,"FAN_TYPE_ZHUANG [庄家
+]",庄家,1,"FAN_TYPE_DIAN_PAO [点炮
+]",点炮,1,"FAN_TYPE_ZI_MO [自摸
+]",自摸,1,"FAN_TYPE_SHANG_TING [上听
+]",上听,1,"FAN_TYPE_BIMEN [闭门
+]",闭门,1,"FAN_TYPE_YIJIAFU [一家付
+]",点炮一家付,0,"FAN_TYPE_PINGHU [平胡
+]",,0,"FAN_TYPE_PINGHU [平胡
+]",,0,"FAN_TYPE_PINGHU [平胡
+]",,0,"CITY_TYPE_JIANPING [建平
+]"
+720900,"VERSION_TYPE_GLOBAL [全球统一数据
+]",营口番数,营口番数,基础番,26,"FAN_TYPE_HAI_DI_LAO [海底捞
+]",海底捞月,1,"FAN_TYPE_GANG_SHANG_KAI [杠上开(杠次)
+]",杠上开花,1,"FAN_TYPE_LIU_LEI [流泪
+]",杠流泪,1,"FAN_TYPE_MING_PIAO [明飘
+]",明飘,1,"FAN_TYPE_PIAO_HU [飘胡
+]",飘胡,1,"FAN_TYPE_SI_GUI_YI [四归一
+]",四归一,0,"FAN_TYPE_LOU_BAO [搂宝//摸宝
+]",搂宝,1,"FAN_TYPE_SAN_JIA_BI_MEN [三家闭门
+]",三家闭门,1,"FAN_TYPE_QING_YI_SE [清一色
+]",清一色,1,"FAN_TYPE_MING_GANG [明杠
+]",杠,0,"FAN_TYPE_AN_GANG [暗杠
+]",暗杠,1,"FAN_TYPE_JIN_BAO [进宝
+]",进宝,1,"FAN_TYPE_ZHAN_LI [站立
+]",站立胡,1,"FAN_TYPE_DUAN_MEN [断门
+]",断门,0,"FAN_TYPE_XUAN_FENG_GANG [旋风杠//风杠
+]",旋风杠,1,"FAN_TYPE_JIA_HU_NORMAL [普通夹胡
+]",夹胡,1,"FAN_TYPE_JIA_HU_MIDDLE [中等夹胡(3/7)
+]",边胡,1,"FAN_TYPE_JIA_HU_HIGHER [高番夹胡(5)//已废弃
+]",中心五,0,"FAN_TYPE_PIAO_WEIHU [明飘未胡
+]",手把一,2,"FAN_TYPE_PINGHU [平胡
+]",平胡,0,"FAN_TYPE_BAOSANJIA [包三家
+]",点炮包三家,0,"FAN_TYPE_ZHUANG [庄家
+]",庄家,1,"FAN_TYPE_DIAN_PAO [点炮
+]",点炮,1,"FAN_TYPE_ZI_MO [自摸
+]",自摸,1,"FAN_TYPE_SHANG_TING [上听
+]",听牌,1,"FAN_TYPE_BIMEN [闭门
+]",门前清,1,"FAN_TYPE_PINGHU [平胡
+]",,0,"FAN_TYPE_PINGHU [平胡
+]",,0,"FAN_TYPE_PINGHU [平胡
+]",,0,"FAN_TYPE_PINGHU [平胡
+]",,0,"CITY_TYPE_CHAOYANG [朝阳
+]"
+720897,"VERSION_TYPE_GLOBAL [全球统一数据
+]",番数,朝阳番数,基础番,26,"FAN_TYPE_HAI_DI_LAO [海底捞
+]",海底捞月,1,"FAN_TYPE_GANG_SHANG_KAI [杠上开(杠次)
+]",杠上开花,1,"FAN_TYPE_LIU_LEI [流泪
+]",杠流泪,1,"FAN_TYPE_MING_PIAO [明飘
+]",明飘,1,"FAN_TYPE_PIAO_HU [飘胡
+]",飘胡,1,"FAN_TYPE_SI_GUI_YI [四归一
+]",四归一,0,"FAN_TYPE_LOU_BAO [搂宝//摸宝
+]",搂宝,1,"FAN_TYPE_SAN_JIA_BI_MEN [三家闭门
+]",三家闭门,1,"FAN_TYPE_QING_YI_SE [清一色
+]",清一色,1,"FAN_TYPE_MING_GANG [明杠
+]",杠,0,"FAN_TYPE_AN_GANG [暗杠
+]",暗杠,1,"FAN_TYPE_JIN_BAO [进宝
+]",进宝,1,"FAN_TYPE_ZHAN_LI [站立
+]",站立胡,1,"FAN_TYPE_DUAN_MEN [断门
+]",断门,0,"FAN_TYPE_XUAN_FENG_GANG [旋风杠//风杠
+]",旋风杠,1,"FAN_TYPE_JIA_HU_NORMAL [普通夹胡
+]",夹胡,1,"FAN_TYPE_JIA_HU_MIDDLE [中等夹胡(3/7)
+]",边胡,1,"FAN_TYPE_JIA_HU_HIGHER [高番夹胡(5)//已废弃
+]",中心五,0,"FAN_TYPE_PIAO_WEIHU [明飘未胡
+]",手把一,2,"FAN_TYPE_PINGHU [平胡
+]",平胡,0,"FAN_TYPE_BAOSANJIA [包三家
+]",点炮包三家,0,"FAN_TYPE_ZHUANG [庄家
+]",庄家,1,"FAN_TYPE_DIAN_PAO [点炮
+]",点炮,1,"FAN_TYPE_ZI_MO [自摸
+]",自摸,1,"FAN_TYPE_SHANG_TING [上听
+]",听牌,1,"FAN_TYPE_BIMEN [闭门
+]",门前清,1,"FAN_TYPE_PINGHU [平胡
+]",,0,"FAN_TYPE_PINGHU [平胡
+]",,0,"FAN_TYPE_PINGHU [平胡
+]",,0,"FAN_TYPE_PINGHU [平胡
+]",,0,"CITY_TYPE_CHAOYANG [朝阳
+]"
