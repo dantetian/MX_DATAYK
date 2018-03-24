@@ -415,7 +415,9 @@ enum ERROR_CODE {
 	ERROR_CLAN_HAS_JOINED = 81; //茶馆:已在该茶馆
 	ERROR_CLAN_NAME_INVALID = 82; //茶馆:名字非法
 	ERROR_CLAN_ANNOUCEMENT_INVALID = 83; //茶馆:公告含有非法字符
-	ERROR_CLAN_NO_MEM = 84; //茶馆:没有成员
+	ERROR_CLAN_NO_MEM = 84; //茶馆:没有成员//没有找到成员
+	ERROR_CLAN_ROOM_ENTER_NO_CLAN = 85; //不是茶馆成员，不能加入茶馆房
+	ERROR_CLAN_QUERY_NO_CLAN = 86; //茶馆:不是成员，不能查询列表
 }
 
 /////////////////////////////////////////////////////
@@ -498,6 +500,7 @@ enum META_TYPE {
 	META_TYPE_S2S_CLAN_ROOM_START_OR_OVER = 1005; //茶馆房开局或结束//用于在CS处扣除房卡
 	META_TYPE_S2S_CLAN_ROOM_SYNC = 1006; //茶馆房数据实时同步
 	META_TYPE_S2S_CLAN_OPERATION = 1007; //茶馆操作结果数据同步
+	META_TYPE_S2S_COMMON_PROP_SYNC = 1008; //玩家基础属性同步
 }
 
 /////////////////////////////////////////////////////
@@ -1293,6 +1296,7 @@ message ClanRoomStatusChanged {
 	optional Room room = 3; //房间
 	optional int32 created_time = 4; //创建房间
 	repeated PlayerBrief player_list = 5; //玩家分数信息
+	optional int32 games_count = 6; //进行的局数量
 }
 
 //茶馆房实时同步
@@ -1301,8 +1305,17 @@ message ClanRoomSync {
 	optional bytes room_status = 2; //房间//RoomQueryResult数据包装
 }
 
+//茶馆操作返回
 message ClanOperationSync {
 	optional META_TYPE type_t = 1 [ default = META_TYPE_S2S_CLAN_OPERATION ];
 	optional int64 player_id = 2;
 	optional ClanOperation operation = 3; 
+}
+
+//玩家基础属性变化同步
+//
+//用于逻辑服务器变化通知中心服务器加载
+message CommonPropSync {
+	optional META_TYPE type_t = 1 [ default = META_TYPE_S2S_COMMON_PROP_SYNC ];
+	optional int64 player_id = 2;
 }
