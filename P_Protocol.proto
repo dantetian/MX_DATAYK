@@ -311,6 +311,7 @@ message Clan {
 	repeated RoomHistory battle_history = 10; //历史战绩
 	repeated SystemMessage message_list = 11; //消息列表
 	optional int32 online_mem_count = 12; //在线成员数量
+	optional int32 sys_messsage_update_time = 13; //上次操作时间
 }
 
 /////////////////////////////////////////////////////
@@ -418,6 +419,7 @@ enum ERROR_CODE {
 	ERROR_CLAN_NO_MEM = 84; //茶馆:没有成员//没有找到成员
 	ERROR_CLAN_ROOM_ENTER_NO_CLAN = 85; //不是茶馆成员，不能加入茶馆房
 	ERROR_CLAN_QUERY_NO_CLAN = 86; //茶馆:不是成员，不能查询列表
+	ERROR_CLAN_DISMISS_GAMING = 87; //茶馆：无法解散，当前有房间进行中
 }
 
 /////////////////////////////////////////////////////
@@ -892,6 +894,7 @@ enum CLAN_OPER_TYPE {
 	CLAN_OPER_TYPE_ROOM_LIST_QUERY = 11; //查询房间列表：详细信息
 	CLAN_OPER_TYPE_CLAN_LIST_QUERY = 12; //查询茶馆列表
 	CLAN_OPER_TYPE_ROOM_GAMING_LIST_QUERY = 13; //进行中房间列表查询
+	CLAN_OPER_TYPE_UPDATE_SYSTEM_MESSAGE = 14; //系统消息查看时间
 }
 	
 enum BRIEF_TYPE {
