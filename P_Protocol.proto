@@ -141,6 +141,9 @@ message PlayerBrief {
 	optional bytes nickname = 2; //玩家名称
 	optional bytes headimgurl = 3; //头像
 	optional int32 score = 4; //积分和
+
+	optional int32 hupai_count = 5; //胡牌次数
+	optional int32 dianpao_count = 6; //点炮次数
 }
 
 //游戏记录
@@ -306,7 +309,7 @@ message Clan {
 	message RoomHistory {
 		optional int64 room_id = 1; //房间ID	
 		optional int32 battle_time = 2; //对战时间
-		repeated PlayerBrief player_list = 3; //玩家分数信息
+		repeated PlayerBrief player_list = 3; //玩家分数信息//索引4之前的简要数据
 	}
 	repeated RoomHistory battle_history = 10; //历史战绩
 	repeated SystemMessage message_list = 11; //消息列表
