@@ -589,7 +589,8 @@ message ClanLimit {
 	optional int32 annoucement_limit = 7  [ default = 300]; //公告字数限制
 	optional int32 room_history_last_day = 8 [ default = 10 ]; //历史战绩保留天数
 	optional int32 sys_message_limit = 9 [ default = 14 ]; //茶馆系统消息保存天数
-	optional int32 hoster_create_room = 10; //必须老板开房
+	optional int32 hoster_create_room = 10; //是否必须老板开房(1:必须老板开房; 0:不限制，默认不限制)
+	optional int32 create_room_limit = 11 [ default = 20 ]; //可创建房间上限
 }
 
 /////////////////////////////////////////////////////
