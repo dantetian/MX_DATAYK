@@ -423,6 +423,8 @@ enum ERROR_CODE {
 	ERROR_CLAN_ROOM_ENTER_NO_CLAN = 85; //不是茶馆成员，不能加入茶馆房
 	ERROR_CLAN_QUERY_NO_CLAN = 86; //茶馆:不是成员，不能查询列表
 	ERROR_CLAN_DISMISS_GAMING = 87; //茶馆：无法解散，当前有房间进行中
+	ERROR_CLAN_HAS_APPLY = 88; //茶馆：已经申请过加入茶馆
+	ERROR_CLAN_ROOM_COUNT_LIMIT = 89; //茶馆：创建房间已经达到上限
 }
 
 /////////////////////////////////////////////////////
