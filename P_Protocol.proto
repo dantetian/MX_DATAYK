@@ -820,6 +820,7 @@ message PaiOperationCache {
 	repeated PAI_OPER_TYPE oper_list = 5; //可操作列表
 	repeated PaiElement ting_pais = 6; //听牌列表
 	optional PaiOperationAlert alert = 7; //缓存操作
+	optional PaiOperation pai_oper = 8; //牌操作//斗地主
 }
 
 //牌操作
@@ -827,7 +828,7 @@ message PaiOperation {
 	optional META_TYPE type_t = 1 [ default = META_TYPE_SHARE_PAI_OPERATION ];
 	optional PAI_OPER_TYPE oper_type = 2; //牌操作
 	optional POSITION_TYPE position = 3; //位置
-	repeated PaiElement pais = 4; //牌数据
+	repeated PaiElement pais = 4; //牌数据//斗地主只使用此数据
 	optional PaiElement pai = 5; //牌数据
 }
 
