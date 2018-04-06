@@ -591,6 +591,7 @@ message ClanLimit {
 	optional int32 sys_message_limit = 9 [ default = 14 ]; //茶馆系统消息保存天数
 	optional int32 hoster_create_room = 10; //是否必须老板开房(1:必须老板开房; 0:不限制，默认不限制)
 	optional int32 create_room_limit = 11 [ default = 20 ]; //可创建房间上限
+	optional int32 create_daili_limit = 12; //是否强制代理才能创建俱乐部(1:必须代理；0:不限制，默认不限制)
 }
 
 /////////////////////////////////////////////////////
