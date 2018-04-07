@@ -860,7 +860,7 @@ enum GAME_OPER_TYPE {
 	GAME_OPER_TYPE_HOSTER_DISMISS = 7; //房主解散
 	GAME_OPER_TYPE_OFFLINE = 8; //离线
 	GAME_OPER_TYPE_ONLINE = 9; //在线
-	GAME_OPER_TYPE_JIAOZHUANG = 10; //叫庄//叫地主
+	GAME_OPER_TYPE_JIAOZHUANG = 10; //叫庄//叫地主//抢地主
 }
 
 //游戏操作
@@ -870,7 +870,7 @@ message GameOperation {
 	optional int64 source_player_id = 3; //来自XX玩家的操作
 	optional int64 destination_player_id = 4; //针对XX玩家的操作：踢人
 	optional ERROR_CODE error_code = 5;
-	optional int32 beilv = 6; //倍率//GAME_OPER_TYPE_START//GAME_OPER_TYPE_JIAOZHUANG
+	optional int32 beilv = 6; //倍率//GAME_OPER_TYPE_JIAOZHUANG//不叫不填
 }
 
 //商城购买
@@ -1001,22 +1001,25 @@ message PaiNotify {
 		CARDS_DATA_TYPE_START = 1; //开局
 		CARDS_DATA_TYPE_FAPAI = 2; //发牌
 		CARDS_DATA_TYPE_SYNC = 3; //同步
+		CARDS_DATA_TYPE_DIPAI = 4; //底牌//斗地主
 	}
 	optional int64 player_id = 2; //发牌玩家
 	optional CARDS_DATA_TYPE data_type = 3; //缘由
-	//多张牌数据 
+	//多张牌数据//麻将牌 
 	message MutiPai { 
 		optional CARD_TYPE card_type = 1; //牌类型：饼、条...
 		repeated int32 cards = 2; //牌值
 	}
 	repeated MutiPai pais = 4; //数据：开局，发13或14张牌
-	//单张牌数据 
+	//单张牌数据//麻将牌
 	message SinglePai { 
 		optional CARD_TYPE card_type = 1; //牌类型：饼、条...
 		optional int32 card_value = 2; //牌值
 	}
 	optional SinglePai pai = 5; //数据：发牌，发1张牌
 	optional int32 cards_remain = 6; //剩余牌数量
+	//斗地主发牌数据
+	repeated PaiElement cards = 7; //斗地主发牌
 }
 
 //玩家基础属性同步

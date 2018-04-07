@@ -158,7 +158,6 @@ enum CITY_TYPE {
 
 //斗地主抢庄方式
 enum ZHUANG_TYPE {
-	ZHUANG_TYPE_PASS = 0; //不叫//不加倍
 	ZHUANG_TYPE_QIANGDIZHU = 1; //抢地主
 	ZHUANG_TYPE_JIAOFEN = 2; //叫分
 }
