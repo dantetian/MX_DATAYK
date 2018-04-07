@@ -824,6 +824,7 @@ message PaiOperationCache {
 }
 
 enum PAIXING_TYPE {
+	PAIXING_TYPE_INVALID = 0; //非法牌型
 	PAIXING_TYPE_ZHADAN = 1; //炸弹
 	PAIXING_TYPE_42 = 2; //四带二张
 	PAIXING_TYPE_3 = 3; //三条
