@@ -158,6 +158,7 @@ enum CITY_TYPE {
 
 //斗地主抢庄方式
 enum ZHUANG_TYPE {
+	ZHUANG_TYPE_PASS = 0; //不叫//不加倍
 	ZHUANG_TYPE_QIANGDIZHU = 1; //抢地主
 	ZHUANG_TYPE_JIAOFEN = 2; //叫分
 }
@@ -250,7 +251,7 @@ message MJCard {
 	optional ASSET_TYPE type_t = 1 [ default = ASSET_TYPE_MJ_CARD ];
 	optional AssetCommonProp common_prop = 2; //公共属性
 	optional CARD_TYPE card_type = 3;	//牌类型
-	optional int32 group_count = 4 [ default = 4 ]; //组数量(有多少个相同的麻将)
+	optional int32 group_count = 4 [ default = 4 ]; //组数量(有多少个相同的麻将//扑克)
 	message Card {
 		optional int32 value = 1; //牌值
 		optional bytes model_path = 2;	//牌模型或者图片路径
