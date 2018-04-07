@@ -153,6 +153,13 @@ enum CITY_TYPE {
 	CITY_TYPE_CHAOYANG = 1; //朝阳
 	CITY_TYPE_JIANPING = 2; //建平
 	CITY_TYPE_YINGKOU = 3; //营口
+	CITY_TYPE_DALIAN = 4; //大连
+}
+
+//斗地主抢庄方式
+enum ZHUANG_TYPE {
+	ZHUANG_TYPE_QIANGDIZHU = 1; //抢地主
+	ZHUANG_TYPE_JIAOFEN = 2; //叫分
 }
 
 //房间设置-番型选择
@@ -166,6 +173,7 @@ message RoomOptions {
 	optional bool gmt_opened = 7; //是否代开房
 	optional ROOM_PAY_TYPE pay_type = 8; //付费方式
 	optional CITY_TYPE city_type = 9; //城市
+	optional ZHUANG_TYPE zhuang_type = 10; //抢庄方式//叫地主方式
 }
 
 //房间设置
