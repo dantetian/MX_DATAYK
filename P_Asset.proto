@@ -437,8 +437,8 @@ message RoomFan {
 
 enum GAME_TYPE {
 	GAME_TYPE_MAJIANG = 1; //麻将
-	GAME_TYPE_NIUNIU = 2; //牛牛
-	GAME_TYPE_DOUDIZHU = 3; //斗地主
+	GAME_TYPE_DOUDIZHU = 2; //斗地主
+	GAME_TYPE_NIUNIU = 3; //牛牛
 }
 
 //房间模式
