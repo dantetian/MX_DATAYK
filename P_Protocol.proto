@@ -1260,6 +1260,7 @@ message RoomAll {
 	repeated GameRecord list = 10; //本次游戏历史战绩列表
 	optional PaiElement zhuapai = 11; //当前玩家最近一次抓牌
 	optional PaiElement huipai = 12; //会儿牌//如果选择则有
+	optional PaiOperation pai_oper = 13; //斗地主//玩家打牌数据
 }
 
 //玩家房间变更
