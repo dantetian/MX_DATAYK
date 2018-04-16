@@ -1263,6 +1263,7 @@ message RoomAll {
 	optional PaiElement huipai = 12; //会儿牌//如果选择则有
 	optional PaiOperation pai_oper = 13; //斗地主//玩家打牌数据
 	optional POSITION_TYPE dizhu_position = 14; //斗地主//地主位置
+	optional int32 beishu = 15; //斗地主//倍数
 }
 
 //玩家房间变更
