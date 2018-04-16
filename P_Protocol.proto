@@ -1183,6 +1183,7 @@ message PaiPushDown {
 		optional int64 player_id = 1; //玩家ID
 		optional POSITION_TYPE position = 2; //玩家当前座次
 		repeated MultiplePai pai_list = 3; //牌数据
+		repeated PaiElement cards = 4; //斗地主//牌数据
 	}
 	repeated PlayerElement player_list = 2; //各个玩家牌
 }
