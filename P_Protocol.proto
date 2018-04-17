@@ -1232,6 +1232,12 @@ message BattleList {
 	repeated int64 room_list = 2; //列表
 }
 
+//叫地主元素
+message RobElement {
+	optional int64 player_id = 1; //玩家
+	optional int32 beilv = 2; //斗地主//倍率//是否叫地主
+}
+
 //房间全部数据
 message RoomAll {
 	optional META_TYPE type_t = 1 [ default = META_TYPE_S2C_ROOM_ALL ];
@@ -1266,6 +1272,7 @@ message RoomAll {
 	optional POSITION_TYPE dizhu_position = 14; //斗地主//地主位置
 	optional int32 beishu = 15; //斗地主//倍数
 	repeated PaiElement dipai = 16; //斗地主//底牌
+	repeated RobElement rob_list = 17; //斗地主//叫地主列表
 }
 
 //玩家房间变更
