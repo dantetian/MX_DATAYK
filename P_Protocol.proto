@@ -1113,11 +1113,13 @@ message RoomRecord {
 	optional bytes headimgurl = 3; //头像
 	optional int32 score = 4; //积分总和
 	optional int32 pk_count = 5; //对局数
-	optional int32 banker_count = 6; //庄家数
-	optional int32 win_count = 7; //胜局数
-	optional int32 dianpao_count = 8; //点炮数
-	optional int32 loubao_count = 9; //搂宝次数
-	optional int32 jinbao_count = 10; //进宝次数
+	optional int32 banker_count = 6; //庄家数//麻将
+	optional int32 win_count = 7; //胜局数//麻将//斗地主
+	optional int32 dianpao_count = 8; //点炮数//麻将
+	optional int32 loubao_count = 9; //搂宝次数//麻将
+	optional int32 jinbao_count = 10; //进宝次数//麻将
+	optional int32 dizhu_count = 11; //地主次数//斗地主
+	optional int32 zhadan_count = 12; //炸弹次数//斗地主
 }
 
 message RoomCalculate {
