@@ -1104,6 +1104,7 @@ message GameCalculate {
 	optional PaiElement baopai = 4; //宝牌
 	optional GameRecord record = 5; //积分结算
 	optional FAN_TYPE max_fan_type = 6; //最大番数
+	optional bool is_chuntian = 7; //是否春天 
 }
 
 //好友房游戏结算
