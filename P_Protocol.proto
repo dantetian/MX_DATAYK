@@ -863,6 +863,7 @@ enum GAME_OPER_TYPE {
 	GAME_OPER_TYPE_OFFLINE = 8; //离线
 	GAME_OPER_TYPE_ONLINE = 9; //在线
 	GAME_OPER_TYPE_JIAOZHUANG = 10; //叫庄//叫地主//抢地主
+	GAME_OPER_TYPE_LOGOUT = 11; //断网或退出
 }
 
 //游戏操作
